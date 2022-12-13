@@ -275,6 +275,7 @@ section .title::after{
     padding: 20px 25px;
     cursor: pointer;
     transition: all 0.3s ease;
+    color: inherit;
 }
 .services .serv-content .card:hover{
     background: crimson;
@@ -359,19 +360,19 @@ section .title::after{
     background: crimson;
 }
 .skills-content .right .html::before{
-    width: 70%;
+    width: 90%;
 }
 .skills-content .right .css::before{
     width: 80%;
 }
 .skills-content .right .js::before{
-    width: 50%;
+    width: 75%;
 }
 .skills-content .right .php::before{
     width: 70%;
 }
 .skills-content .right .mysql::before{
-    width: 60%;
+    width: 80%;
 }
 
 /* teams section styling */
