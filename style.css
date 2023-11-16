@@ -550,6 +550,22 @@ footer span a:hover{
     text-decoration: underline;
 }
 
+.services .max-width a{
+    display: inline-block;
+    background: #2a875f;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 8px 16px;
+    margin-top: 20px;
+    border-radius: 6px;
+    border: 2px solid #2a875f;
+    transition: all 0.3s ease;
+}
+.services .max-width a{
+    color: #2a875f;
+    background: none;
+}
 
 /* responsive media query start */
 @media (max-width: 1300px) {
