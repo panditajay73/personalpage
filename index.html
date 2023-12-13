@@ -24,19 +24,34 @@
     <nav class="navbar">
         <div class="max-width">
             <div class="logo"><a href="#">Ajay<span>Pandey.</span></a></div>
-                       <ul class="menu">
+            <ul class="menu">
                 <li><a href="#home" class="menu-btn">Home</a></li>
                 <li><a href="#about" class="menu-btn">About</a></li>
-                <li><a href="#services" class="menu-btn">My Handles</a></li>
-                <li><a href="#skills" class="menu-btn">My Skills</a></li>
                 <li><a href="#projects" class="menu-btn">My Projects</a></li>
-                <li><a href="#contact" class="menu-btn">Contact</a></li>
+                <li><a href="#skills" class="menu-btn">My Skills</a></li>
+                <li><a href="#services" class="menu-btn">My Handles</a></li>
+                
+                <li><a href="#contact" class="menu-btn">Contact Me</a></li>
+                <li><a class="menu-btn">Visitors - <span id="count">50</span></a></li>
+                <!-- <li class="menu-btn"></li> -->
             </ul>
             <div class="menu-btn">
                 <i class="fa fa-bars"></i>
             </div>
         </div>
     </nav>
+    <script>
+    // Update the count on the page
+    // Get the count from localStorage or default to 10000
+    let count = parseInt(localStorage.getItem('refreshCount')) || 10000;
+
+    // Update the count on the page
+    document.getElementById('count').textContent = count;
+
+    // Increment the count and update on page refresh
+    count++;
+    localStorage.setItem('refreshCount', count.toString());
+      </script>
 
     <!-- home section start -->
     <section class="home" id="home">
@@ -71,38 +86,54 @@ CoverLetter_AjayPandey.pdf">Cover Letter</a>
         </div>
     </section>
 
-    <!-- services section start -->
-    <section class="services" id="services">
-        <div class="max-width">
-            <h2 class="title">My Handles</h2>
-            <div class="serv-content">
-                <a class="card" href="https://www.linkedin.com/in/ajay-pandey-82045319a/">
-                <div >
-                    <div class="box">
-                        <i class="fa-brands fa-linkedin-in fa-shake"></i>
-                        <div class="text">(LinkedIn)</div>
-                        <p>LinkedIn is a professional networking platform that connects people with job opportunities, industry experts, and business partners. It allows users to create profiles, post and view job listings.</p>
-                    </div>
+   <!-- teams section start -->
+   <section class="services" id="projects">
+    <div class="max-width">
+        <h2 class="title">My Projects</h2>
+        <div class="serv-content">
+            <a class="card" href="https://unrivaled-sprinkles-4bac85.netlify.app/">
+            <div >
+                <div class="box">
+                    <i class="fa-solid fa-gamepad fa-spin"></i>
+                    <div class="text">(eSports Hub)</div>
+                    <p>
+                    <b>Features - </b>live streaming of competitive gaming events, match
+                    schedules, team and player proﬁles, game and tournament news,
+                    community forums, merchandise sales, tools for organizing and
+                    hosting online tournaments and leagues.<br><b>Using FullStack - MERN Tools</b>
+
+                </p>
+                </div>
+            </div></a>
+            <a class="card" href="https://panditajay73.github.io/redstore/">
+            <div >
+                <div class="box">
+                    <i class="fa-solid fa-at fa-spin"></i>
+                    <div class="text">(RedStore)</div>
+                    <p>
+                        <b>Features - </b>product catalog, shopping cart, checkout process, payment
+                        gateway integration, customer account management, order tracking,
+                        admin dashboard and customer support.<br><b>Using HTML , CSS, JS, and PHP-Laravel</b>
+                    </p>
+                </div>
                 </div></a>
-                <a class="card" href="https://github.com/panditajay73/">
-                <div >
-                    <div class="box">
-                        <i class="fa-brands fa-github fa-shake"></i>
-                        <div class="text">(GitHub)</div>
-                        <p>GitHub is a web-based hosting service for version control using Git. It is a platform for developers to store, collaborate, and share code. It offers features such as bug tracking, feature requests, task management, and wikis for every project</p>
-                    </div>
-                    </div></a>
-                <a class="card" href="https://leetcode.com/ajay_pandey/">
-                <div >
-                    <div class="box">
-                        <i class="fa-solid fa-code fa-shake"></i>
-                        <div class="text">(LeetCode)</div>
-                        <p>  LeetCode is an online platform for coding practice and technical interview preparation. It provides a library of coding problems and solutions, as well as online judges to test code submissions. </p>
-                    </div>
-                    </div></a>
-               </div>
-            </div>
-    </section>
+            <a class="card" href="https://github.com/panditajay73/Real-LifeInvisibiityCloak/">
+            <div >
+                <div class="box">
+                    <i class="fa-solid fa-laptop-code fa-spin"></i>
+                    <div class="text">(Invisibility Cloak)</div>
+                    <p>  
+                        <b>Features - </b>It uses computer vision technology and green screen eﬀects to
+                        remove background and add other backgrounds in any photos and
+                        videos within green screen limitations.<br><b>Using Python and Machine Learning</b>
+                    </p>
+                </div>
+                </div></a>
+           </div>
+           <a href="https://github.com/panditajay73?tab=repositories">Explore more projects....</a>
+        </div>
+</section>
+
 
     <!-- skills section start -->
     <section class="skills" id="skills">
@@ -196,53 +227,40 @@ PowerPoint, Excel]</li>
         </div>
     </section>
 
-    <!-- teams section start -->
-    <section class="services" id="projects">
+     <!-- services section start -->
+     <section class="services" id="services">
         <div class="max-width">
-            <h2 class="title">My Projects</h2>
+            <h2 class="title">My Handles</h2>
             <div class="serv-content">
-                <a class="card" href="https://unrivaled-sprinkles-4bac85.netlify.app/">
+                <a class="card" href="https://www.linkedin.com/in/ajay-pandey-82045319a/">
                 <div >
                     <div class="box">
-                        <i class="fa-solid fa-gamepad fa-spin"></i>
-                        <div class="text">(eSports Hub)</div>
-                        <p>
-                        <b>Features - </b>live streaming of competitive gaming events, match
-                        schedules, team and player proﬁles, game and tournament news,
-                        community forums, merchandise sales, tools for organizing and
-                        hosting online tournaments and leagues.<br><b>Using FullStack - MERN Tools</b>
-
-                    </p>
+                        <i class="fa-brands fa-linkedin-in fa-shake"></i>
+                        <div class="text">(LinkedIn)</div>
+                        <p>LinkedIn is a professional networking platform that connects people with job opportunities, industry experts, and business partners. It allows users to create profiles, post and view job listings.</p>
                     </div>
                 </div></a>
-                <a class="card" href="https://panditajay73.github.io/redstore/">
+                <a class="card" href="https://github.com/panditajay73/">
                 <div >
                     <div class="box">
-                        <i class="fa-solid fa-at fa-spin"></i>
-                        <div class="text">(RedStore)</div>
-                        <p>
-                            <b>Features - </b>product catalog, shopping cart, checkout process, payment
-                            gateway integration, customer account management, order tracking,
-                            admin dashboard and customer support.<br><b>Using HTML , CSS, JS, and PHP-Laravel</b>
-                        </p>
+                        <i class="fa-brands fa-github fa-shake"></i>
+                        <div class="text">(GitHub)</div>
+                        <p>GitHub is a web-based hosting service for version control using Git. It is a platform for developers to store, collaborate, and share code. It offers features such as bug tracking, feature requests, task management, and wikis for every project</p>
                     </div>
                     </div></a>
-                <a class="card" href="https://github.com/panditajay73/Real-LifeInvisibiityCloak/">
+                <a class="card" href="https://leetcode.com/ajay_pandey/">
                 <div >
                     <div class="box">
-                        <i class="fa-solid fa-laptop-code fa-spin"></i>
-                        <div class="text">(Invisibility Cloak)</div>
-                        <p>  
-                            <b>Features - </b>It uses computer vision technology and green screen eﬀects to
-                            remove background and add other backgrounds in any photos and
-                            videos within green screen limitations.<br><b>Using Python and Machine Learning</b>
-                        </p>
+                        <i class="fa-solid fa-code fa-shake"></i>
+                        <div class="text">(LeetCode)</div>
+                        <p>  LeetCode is an online platform for coding practice and technical interview preparation. It provides a library of coding problems and solutions, as well as online judges to test code submissions. </p>
                     </div>
                     </div></a>
                </div>
-               <a href="https://github.com/panditajay73?tab=repositories">Explore more projects....</a>
             </div>
     </section>
+
+
     <!-- <section class="teams" id="teams">
         <div class="max-width">
             <h2 class="title">My teams</h2>
