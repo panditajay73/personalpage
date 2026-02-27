@@ -521,16 +521,20 @@ CoverLetter_AjayPandey.pdf" style="display: none;">Cover Letter</a>
 
     <script src="script.js"></script>
      <script>
-    // Chatbot functionality
+document.addEventListener("DOMContentLoaded", function () {
 
     const typingForm = document.querySelector(".chatbot-input");
     const chatContainer = document.querySelector(".chatbot-messages");
-    const inputField = document.querySelector("#chatbotInput"); // Chatbot input field
+    const inputField = document.querySelector("#chatbotInput");
+
     let userMessage = null;
     let isResponseGenerating = false;
 
-    const API_KEY = "AIzaSyAss8-mxVMTvFEVxC9UAbbbeSzqMvv3lps"; // Your Google AI Studio API key
-    const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${API_KEY}`;
+    const API_KEY = "AIzaSyAUn5vQjEjo0vpsSmxMk4p1lS8nTDCTENM";
+
+    const API_URL =
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key="
+        + API_KEY;
 
     const createMessageElement = (content, ...classes) => {
         const div = document.createElement("div");
@@ -540,66 +544,96 @@ CoverLetter_AjayPandey.pdf" style="display: none;">Cover Letter</a>
     };
 
     const showTypingEffect = (text, textElement, incomingMessageDiv) => {
-        const words = text.split(' ');
+
+        if (!textElement) return;
+
+        const words = text.split(" ");
         let currentWordIndex = 0;
 
         const typingInterval = setInterval(() => {
-            textElement.innerText += (currentWordIndex === 0 ? '' : ' ') + words[currentWordIndex++];
-            incomingMessageDiv.querySelector(".icon")?.classList.add("hide");
+
+            textElement.innerText +=
+                (currentWordIndex === 0 ? "" : " ") + words[currentWordIndex++];
 
             if (currentWordIndex === words.length) {
                 clearInterval(typingInterval);
                 isResponseGenerating = false;
-                incomingMessageDiv.querySelector(".icon")?.classList.remove("hide");
-                chatContainer.scrollTo(0, chatContainer.scrollHeight);
 
-                // Remove loading animation after response is shown
-                incomingMessageDiv.querySelector(".loading-indicator").remove();
+                const loader = incomingMessageDiv.querySelector(".loading-indicator");
+                if (loader) loader.remove();
+
+                chatContainer.scrollTo(0, chatContainer.scrollHeight);
             }
-        }, 75);
+
+        }, 50);
     };
 
     const generateAPIResponse = async (incomingMessageDiv) => {
+
         const textElement = incomingMessageDiv.querySelector(".text");
+        if (!textElement) return;
 
         try {
+
             const response = await fetch(API_URL, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
-                    contents: [{ role: "user", parts: [{ text: userMessage }] }]
-                }),
+                    contents: [
+                        {
+                            role: "user",
+                            parts: [{ text: userMessage }]
+                        }
+                    ]
+                })
             });
 
             const data = await response.json();
 
-            // Check if the response contains valid content
-            if (!response.ok || !data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-                throw new Error('Failed to get a valid response from the API.');
+            if (!response.ok) {
+                console.error("API Error:", data);
+                throw new Error(data?.error?.message || "API request failed");
             }
 
-            const apiResponse = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, '$1');
-            showTypingEffect(apiResponse, textElement, incomingMessageDiv);
+            const apiText =
+                data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (!apiText) {
+                throw new Error("Empty response from API");
+            }
+
+            const cleanedText = apiText.replace(/\*\*(.*?)\*\*/g, "$1");
+
+            showTypingEffect(cleanedText, textElement, incomingMessageDiv);
 
         } catch (error) {
+
             isResponseGenerating = false;
-            textElement.innerText = error.message || 'Error generating response';
+
+            textElement.innerText =
+                error.message || "Error generating response";
+
             incomingMessageDiv.classList.add("error");
-        } finally {
-            incomingMessageDiv.classList.remove("loading");
         }
     };
 
     const showLoadingAnimation = () => {
-        const html = `<div class="message-content">
-                        <p class="text"></p>
-                        <div class="loading-indicator">
-                            <div class ="loading-bar"></div>
-                            <div class="loading-bar"></div>
-                            <div class="loading-bar"></div>
-                        </div>
-                      </div>`;
-        const incomingMessageDiv = createMessageElement(html, "incoming", "loading");
+
+        const html = `
+            <div class="message-content">
+                <p class="text"></p>
+                <div class="loading-indicator">
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                    <div class="loading-bar"></div>
+                </div>
+            </div>
+        `;
+
+        const incomingMessageDiv =
+            createMessageElement(html, "incoming", "loading");
 
         chatContainer.appendChild(incomingMessageDiv);
         chatContainer.scrollTo(0, chatContainer.scrollHeight);
@@ -607,28 +641,39 @@ CoverLetter_AjayPandey.pdf" style="display: none;">Cover Letter</a>
         generateAPIResponse(incomingMessageDiv);
     };
 
-    const handleOutgoingChat = () => {
+    window.handleOutgoingChat = function () {
+
+        if (!typingForm || !chatContainer || !inputField) return;
+
         if (!typingForm.classList.contains("typing") && !isResponseGenerating) {
+
             userMessage = inputField.value.trim();
             if (userMessage === "") return;
 
             inputField.value = "";
             typingForm.classList.add("typing");
 
-            const outgoingHtml = `<div class="message-content">
-                                   <p class="text">${userMessage}</p>
-                                  </div>`;
-            chatContainer.appendChild(createMessageElement(outgoingHtml, "outgoing"));
+            const outgoingHtml = `
+                <div class="message-content">
+                    <p class="text">${userMessage}</p>
+                </div>
+            `;
+
+            chatContainer.appendChild(
+                createMessageElement(outgoingHtml, "outgoing")
+            );
+
             chatContainer.scrollTo(0, chatContainer.scrollHeight);
 
             setTimeout(() => {
                 typingForm.classList.remove("typing");
                 isResponseGenerating = true;
                 showLoadingAnimation();
-            }, 600);
+            }, 500);
         }
     };
-  
+
+});
 </script>
 </body>
 </html>
