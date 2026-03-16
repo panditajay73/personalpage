@@ -635,11 +635,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let isResponseGenerating = false;
     let websiteContent = "";
 
-    const API_KEY = "AIzaSyDKZyuzaDmRS3B4IbWrYJZt_CMVQQ9AMtQ";
-
     const API_URL =
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
-        + API_KEY;
+"https://ajay-groq-chatbot-g5cyembvhshwfzac.centralindia-01.azurewebsites.net/api/chatbot";
 
     // ===============================
     // LOAD WEBSITE CONTENT (ONCE)
@@ -733,13 +730,8 @@ ${userMessage}
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    contents: [
-                        {
-                            role: "user",
-                            parts: [{ text: finalPrompt }]
-                        }
-                    ]
-                })
+    prompt: finalPrompt
+})
             });
 
             const data = await response.json();
@@ -750,7 +742,7 @@ ${userMessage}
             }
 
             const apiText =
-                data?.candidates?.[0]?.content?.parts?.[0]?.text;
+data?.choices?.[0]?.message?.content;
 
             if (!apiText) {
                 throw new Error("Empty response from API");
@@ -845,4 +837,3 @@ ${userMessage}
 </script>
 </body>
 </html>
-
