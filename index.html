@@ -599,7 +599,7 @@ CoverLetter_AjayPandey.pdf" style="display: none;">Cover Letter</a>
             <div class="chatbot-messages" id="chatbotMessages"></div>
             <div class="chatbot-input">
                 <input type="text" id="chatbotInput" placeholder="Type a message...">
-                <button type="button" onclick="handleOutgoingChat()">Send</button>
+                <button type="button" id="sendBtn">Send</button>
             </div>
         </div>
 
@@ -612,37 +612,31 @@ CoverLetter_AjayPandey.pdf" style="display: none;">Cover Letter</a>
     </footer>
 
     <script src="script.js"></script>
-    <script>
-        function toggleSwitch(checkbox) {
-    const slider = document.getElementById("toggleSlider");
+    
+   <script>
 
-    if (checkbox.checked) {
-        slider.style.backgroundColor = "black"; // White when ON
-        slider.style.border = "2px solid white";
-    } else {
-        slider.style.backgroundColor = "white"; // Grey when OFF
-        slider.style.border = "2px solid black";
-    }
-}
 document.addEventListener("DOMContentLoaded", function () {
 
     const typingForm = document.querySelector(".chatbot-input");
     const chatContainer = document.querySelector(".chatbot-messages");
     const inputField = document.querySelector("#chatbotInput");
     const websiteToggle = document.querySelector("#websiteToggle");
+    const sendBtn = document.getElementById("sendBtn");
 
     let userMessage = null;
     let isResponseGenerating = false;
     let websiteContent = "";
 
     const API_URL =
-"https://ajay-groq-chatbot-g5cyembvhshwfzac.centralindia-01.azurewebsites.net/api/chatbot";
+    "https://ajay-groq-chatbot-g5cyembvhshwfzac.centralindia-01.azurewebsites.net/api/chatbot";
 
     // ===============================
-    // LOAD WEBSITE CONTENT (ONCE)
+    // LOAD WEBSITE CONTENT
     // ===============================
     async function loadWebsiteContent() {
+
         try {
+
             const res = await fetch("https://panditajay73.github.io/personalpage/");
             const html = await res.text();
 
@@ -650,8 +644,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const doc = parser.parseFromString(html, "text/html");
 
             websiteContent = doc.body.innerText;
+
         } catch (error) {
+
             console.error("Website content load failed:", error);
+
         }
     }
 
@@ -661,10 +658,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // CREATE MESSAGE ELEMENT
     // ===============================
     const createMessageElement = (content, ...classes) => {
+
         const div = document.createElement("div");
+
         div.classList.add("message", ...classes);
         div.innerHTML = content;
+
         return div;
+
     };
 
     // ===============================
@@ -680,20 +681,24 @@ document.addEventListener("DOMContentLoaded", function () {
         const typingInterval = setInterval(() => {
 
             textElement.innerText +=
-                (currentWordIndex === 0 ? "" : " ") + words[currentWordIndex++];
+            (currentWordIndex === 0 ? "" : " ") + words[currentWordIndex++];
 
             if (currentWordIndex === words.length) {
 
                 clearInterval(typingInterval);
                 isResponseGenerating = false;
 
-                const loader = incomingMessageDiv.querySelector(".loading-indicator");
+                const loader =
+                incomingMessageDiv.querySelector(".loading-indicator");
+
                 if (loader) loader.remove();
 
                 chatContainer.scrollTo(0, chatContainer.scrollHeight);
+
             }
 
         }, 40);
+
     };
 
     // ===============================
@@ -702,13 +707,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const generateAPIResponse = async (incomingMessageDiv) => {
 
         const textElement = incomingMessageDiv.querySelector(".text");
+
         if (!textElement) return;
 
         try {
 
             let finalPrompt = userMessage;
 
-            // WEBSITE MODE ENABLED
             if (websiteToggle && websiteToggle.checked && websiteContent) {
 
                 finalPrompt = `
@@ -722,57 +727,57 @@ ${websiteContent}
 User question:
 ${userMessage}
 `;
+
             }
 
             const response = await fetch(API_URL, {
+
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json"
                 },
+
                 body: JSON.stringify({
-    prompt: finalPrompt
-})
+                    prompt: finalPrompt
+                })
+
             });
 
             const data = await response.json();
 
+            console.log("API response:", data);
+
             if (!response.ok) {
-                console.error("API Error:", data);
-                throw new Error(data?.error?.message || "API request failed");
+
+                throw new Error(
+                data?.error?.message || "API request failed"
+                );
+
             }
 
-            const data = await response.json();
+            const apiText =
+            data?.choices?.[0]?.message?.content ||
+            data?.message ||
+            "I couldn't generate a response.";
 
-if (!response.ok) {
-    console.error("API Error:", data);
-    throw new Error(data?.error?.message || "API request failed");
-}
-
-console.log("API response:", data);
-
-const apiText =
-data?.choices?.[0]?.message?.content ||
-data?.choices?.[0]?.delta?.content ||
-data?.message ||
-"I couldn't generate a response.";
-
-const cleanedText = apiText.replace(/\*\*(.*?)\*\*/g, "$1");
-
-showTypingEffect(cleanedText, textElement, incomingMessageDiv);
-
-            const cleanedText = apiText.replace(/\*\*(.*?)\*\*/g, "$1");
+            const cleanedText =
+            apiText.replace(/\*\*(.*?)\*\*/g, "$1");
 
             showTypingEffect(cleanedText, textElement, incomingMessageDiv);
 
-        } catch (error) {
+        }
+        catch (error) {
 
             isResponseGenerating = false;
 
             textElement.innerText =
-                error.message || "Error generating response";
+            error.message || "Error generating response";
 
             incomingMessageDiv.classList.add("error");
+
         }
+
     };
 
     // ===============================
@@ -781,23 +786,25 @@ showTypingEffect(cleanedText, textElement, incomingMessageDiv);
     const showLoadingAnimation = () => {
 
         const html = `
-            <div class="message-content">
-                <p class="text"></p>
-                <div class="loading-indicator">
-                    <div class="loading-bar"></div>
-                    <div class="loading-bar"></div>
-                    <div class="loading-bar"></div>
-                </div>
+        <div class="message-content">
+            <p class="text"></p>
+            <div class="loading-indicator">
+                <div class="loading-bar"></div>
+                <div class="loading-bar"></div>
+                <div class="loading-bar"></div>
             </div>
+        </div>
         `;
 
         const incomingMessageDiv =
-            createMessageElement(html, "incoming", "loading");
+        createMessageElement(html, "incoming", "loading");
 
         chatContainer.appendChild(incomingMessageDiv);
+
         chatContainer.scrollTo(0, chatContainer.scrollHeight);
 
         generateAPIResponse(incomingMessageDiv);
+
     };
 
     // ===============================
@@ -808,41 +815,62 @@ showTypingEffect(cleanedText, textElement, incomingMessageDiv);
         if (!typingForm || !chatContainer || !inputField) return;
 
         if (typingForm.classList.contains("typing") || isResponseGenerating)
-            return;
+        return;
 
         userMessage = inputField.value.trim();
+
         if (userMessage === "") return;
 
         inputField.value = "";
+
         typingForm.classList.add("typing");
 
         const outgoingHtml = `
-            <div class="message-content">
-                <p class="text">${userMessage}</p>
-            </div>
+        <div class="message-content">
+            <p class="text">${userMessage}</p>
+        </div>
         `;
 
         chatContainer.appendChild(
-            createMessageElement(outgoingHtml, "outgoing")
+        createMessageElement(outgoingHtml, "outgoing")
         );
 
         chatContainer.scrollTo(0, chatContainer.scrollHeight);
 
         setTimeout(() => {
+
             typingForm.classList.remove("typing");
+
             isResponseGenerating = true;
+
             showLoadingAnimation();
+
         }, 400);
+
     };
 
     // ===============================
-    // ENTER KEY SUPPORT (DESKTOP + MOBILE)
+    // SEND BUTTON CLICK
+    // ===============================
+    sendBtn.addEventListener("click", function () {
+
+        window.handleOutgoingChat();
+
+    });
+
+    // ===============================
+    // ENTER KEY SUPPORT
     // ===============================
     inputField.addEventListener("keydown", function (event) {
+
         if (event.key === "Enter") {
+
             event.preventDefault();
+
             window.handleOutgoingChat();
+
         }
+
     });
 
 });
